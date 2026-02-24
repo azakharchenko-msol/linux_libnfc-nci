@@ -23,11 +23,19 @@ std::vector<std::string> android::base::Split(const std::string& s, const std::s
 	std::vector<std::string>result;
 	std::string str(s);
 	std::string  token(delimiters);
+	if (token.empty()) {
+		result.push_back(str);
+		return result;
+	}
 	while (str.size()) {
 		size_t index = str.find(token);
 		if (index != std::string::npos) {
 			result.push_back(str.substr(0, index));
-			str = str.substr(index + token.size());
+			size_t next = index + token.size();
+			if (next > str.size()) {
+				break;
+			}
+			str = str.substr(next);
 			if (str.size() == 0)result.push_back(str);
 		}
 		else {
